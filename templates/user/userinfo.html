@@ -1,0 +1,177 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block title %} <title>用户信息</title> {% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+<link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+{% endblock link %}
+
+
+{% block content %}
+<div class="pc">
+    <div class="portrait">
+        {% if userinfo.user_profile_photo  %}
+            <div class="col-lg-2 col-md-2 col-sm-4 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 portrait_content">
+                <p class=text-center id="pc_edit_photo"><img style="height: 120px;" class="img-circle img-responsive text-centerx" src="{% url 'static_file' userinfo.user_profile_photo %}" alt=""></p>
+                <br>
+                <h3 class="text-center">{{ userinfo.user_nickname }}</h3>
+                <br>
+                <h3 class="text-center"><a href="{% url 'logout' %}">退出登录</a></h3>
+            </div>
+        {% else %}
+            <div class="col-lg-2 col-md-2 col-sm-4 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 portrait_content">
+                <h1 class="text-center" id="pc_add_photo"> 点我添加头像</h1>
+                <br>
+                <h3 class="text-center">{{ userinfo.user_nickname }}</h3>
+                <br>
+                <h3 class="text-center"><a href="{% url 'logout' %}">退出登录</a></h3>
+            </div>
+        {% endif %}
+    </div>
+    <div class="userinfo">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-3 col-md-offset-3">
+            <ul>
+                <li>
+                    年龄： <span>{{ userinfo.user_age }}</span>
+                </li>
+
+                <li>
+                    联系地址： <span>{{ userinfo.address }}</span>
+                </li>
+
+                <li>
+                    职业： <span>{{ userinfo.occupation }}</span>
+                </li>
+
+                <li>
+                    兴趣爱好： <span>{{ userinfo.interest }}</span>
+                </li>
+
+                <li>
+                    简介： <span>{{ userinfo.aboutme }}</span>
+                </li>
+
+                <li>
+                    <button class="btn btn-primary form-control" id="pc_deit_userinfo">修改</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div class="mobile">
+    <div class="portrait">
+        {% if userinfo.user_profile_photo  %}
+            <div class="col-sm-6 col-xs-6 col-sm-offset-3 col-xs-offset-3 portrait_content">
+                <p class=text-center id="mobile_edit_photo"><img style="height: 120px;" class="img-circle img-responsive text-centerx" src="{% url 'static_file' userinfo.user_profile_photo %}" alt=""></p>
+                <br>
+                <h3 class="text-center">{{ userinfo.user_nickname }}</h3>
+                <br>
+                <h3 class="text-center"><a href="{% url 'logout' %}">退出登录</a></h3>
+            </div>
+        {% else %}
+            <div class="col-sm-6 col-xs-6 col-sm-offset-3 col-xs-offset-3 portrait_content">
+                <h1 class="text-center" id="mobile_add_photo"> 点我添加头像</h1>
+                <br>
+                <h3 class="text-center">{{ userinfo.user_nickname }}</h3>
+                <br>
+                <h3 class="text-center"><a href="{% url 'logout' %}">退出登录</a></h3>
+            </div>
+        {% endif %}
+    </div>
+    <div class="userinfo">
+        <div class="col-sm-12 col-xs-12">
+            <ul>
+                <li>
+                    年龄： <span>{{ userinfo.user_age }}</span>
+                </li>
+
+                <li>
+                    联系地址： <span>{{ userinfo.address }}</span>
+                </li>
+
+                <li>
+                    职业： <span>{{ userinfo.occupation }}</span>
+                </li>
+
+                <li>
+                    兴趣爱好： <span>{{ userinfo.interest }}</span>
+                </li>
+
+                <li>
+                    简介： <span>{{ userinfo.aboutme }}</span>
+                </li>
+
+                <li>
+                    <button class="btn btn-primary form-control" id="mobile_deit_userinfo">修改</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script>
+        $('#pc_deit_userinfo').click(function () {
+            layer.open({
+                type: 2,
+                title: "修改用户信息",
+                area: ["850px","850px"],
+                content: "{% url 'edit_userinfo' %}",
+            });
+        });
+
+        $('#pc_add_photo').click(function () {
+            layer.open({
+                type: 2,
+                title: "上传头像",
+                area: ["850px","850px"],
+                content: "{% url 'picture_upload' %}",
+            });
+        });
+
+        $('#pc_edit_photo').click(function () {
+            layer.open({
+                type: 2,
+                title: "上传头像",
+                area: ["600px","650px"],
+                content: "{% url 'picture_upload' %}",
+            });
+        });
+
+
+        $('#mobile_deit_userinfo').click(function () {
+            layer.open({
+                type: 2,
+                title: "修改用户信息",
+                area: ["350px","620px"],
+                content: "{% url 'edit_userinfo' %}",
+            });
+        });
+
+        $('#mobile_add_photo').click(function () {
+            layer.open({
+                type: 2,
+                title: "上传头像",
+                area: ["500px","650px"],
+                content: "{% url 'picture_upload' %}",
+            });
+        });
+
+        $('#mobile_edit_photo').click(function () {
+            layer.open({
+                type: 2,
+                title: "上传头像",
+                area: ["500px","650px"],
+                content: "{% url 'picture_upload' %}",
+            });
+        });
+
+    </script>
+{% endblock script %}
+

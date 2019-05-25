@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %} <title> 关于本站 </title> {% endblock title %}
+
+{% block content %}
+    <div class="about">
+        <div class="about_exhibition">
+            <div class="container-fluid container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0">
+
+                        <div class="about_station clearfix">
+                            <h2 class="about_ex_title">关于本站</h2>
+                            <p class="about_ex_content">
+                                本站创立于2019年x月x日，用于学习和和技术交流，如果大家觉得有什么建议或技术分享可以留言！
+                                2019年x月x日，基于Django
+                            </p>
+                            <p><a class="btn btn-success" href="#" role="button">了解更多请点击这里&raquo;</a></p>
+                        </div>
+
+                        <div class="about_station clearfix">
+                            <h2 class="about_ex_title">网站特点</h2>
+                            <p class="about_ex_content">
+                                本站创立于2019年x月x日，用于学习和和技术交流，如果大家觉得有什么建议或技术分享可以留言！
+                                2019年x月x日，基于Django
+                            </p>
+                            <p><a class="btn btn-success" href="#" role="button">了解更多请点击这里&raquo;</a></p>
+                        </div>
+
+                        <div class="about_station clearfix">
+                            <h2 class="about_ex_title">与我联系</h2>
+                            <p class="about_ex_content">
+                                本站创立于2019年x月x日，用于学习和和技术交流，如果大家觉得有什么建议或技术分享可以留言！
+                                2019年x月x日，基于Django
+                            </p>
+                            <p><a class="btn btn-success" href="#" role="button">了解更多请点击这里&raquo;</a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="problem_feedback">
+            <div class="container-fluid container">
+                <div class="row">
+                    <div class="about_station">
+                        <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0">
+                            <h2 class="about_ex_title">建议</h2>
+                            <textarea id="feedback_content" class="form-control about_ex_content" rows="9" name=textarea></textarea>
+                            <input id="feedback_contact" style="margin: 26px 0 13px 0;" type="text" placeholder="邮箱 & 姓名 方便我们工作人员与你联系" class="form-control">
+                            <button type="button" id="feedback_sublimt" class="form-control btn btn-success btn-lg about_ex_content">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script>
+        $(function () {
+
+            $('#feedback_sublimt').click(function () {
+                var feedback_content = $('#feedback_content').val();
+                var feedback_contact = $('#feedback_contact').val();
+
+                data = {
+                    "feedback_content":feedback_content,
+                    "feedback_contact":feedback_contact,
+                };
+
+                $.ajax({
+                    url: "{% url 'about' %}",
+                    type: 'post',
+                    data: data,
+                    success: function (e) {
+                        if(e == "1"){
+                            layer.open({
+                                type: 1,
+                                title:'成功提交',
+                                area: ["450px", "250px"],
+                                content: '<div class="text-center" style="margin-top:55px; font-size:18px;"><p>已成提交！耐心等待我们的评估处理!</p></div>',
+                                btn:[' 确实','取消'],
+                            });
+                        }else{
+                            layer.msg("提交不成功！请重新输入内容提交。");
+                        }
+                    }
+
+                });
+
+
+            });
+
+
+
+        });
+    </script>
+{% endblock script %}

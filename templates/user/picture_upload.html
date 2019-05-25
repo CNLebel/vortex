@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>图片裁剪</title>
+    <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/response.css' %}">
+    <style>
+        body, html, div, img, a, canvas, i, a, button  {
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            border: 0;
+        cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        i {
+            font-style: normal;
+        }
+
+        /* 按钮公共样式 */
+        .btn-style {
+            width: 100px;
+            display: flex;
+            height: 36px;
+            justify-content: center;
+            color: #fff;
+            margin: 0 auto;
+            display: inline-block;
+            background: #0060b1;
+        }
+
+        /* 裁切区域 */
+        .container-upload {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .btn-group #show {
+            width: 200px;
+            margin-left: 20px;
+        }
+
+        .file-wrap {
+            display: inline-block;
+            position: relative;
+        }
+
+        .btn-group #chkUpload {
+            margin-right: 80px;
+        }
+
+        .btn-group #uploadFile {
+            width: 200px;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-left: 20px;
+            z-index: 6;
+            height: 40px;
+            cursor: pointer;
+            font-size: 0;
+        }
+
+        /* 确定上传区域 */
+        .tailoring {
+            width: 500px;
+            height: 500px;
+            margin: auto;
+        }
+
+        .tailoring img {
+            width: 100%;
+        }
+
+        .layer {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            display: none;
+            top: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, .8);
+        }
+
+        .modal {
+            position: fixed;
+            width: 800px;
+            height: 600px;
+            background: #fff;
+        }
+
+        .modal .close {
+            position: absolute;
+            right: 20px;
+            top: 0px;
+            font-size: 50px;
+            cursor: pointer;
+        }
+
+        .modal .btn-style {
+            line-height: 36px;
+        }
+
+        .box-center {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .my-canvas {
+            position: absolute;
+        }
+
+        #uploadImg {
+            margin: 80px auto 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-upload">
+        <div class="tailoring">
+            <img id="image" src="{% static 'images/xia.jpg' %}">
+        </div>
+
+        <div class="btn-group">
+            <button id="chkUpload" class="btn-style" type="button" name="button">选好位置了</button>
+            <div class="file-wrap">
+                <input type="file" name="uploadFile" id="uploadFile">
+                <button id="show" class="btn-style">点我上传并预览裁剪图片</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer">
+        <div class="modal box-center">
+            <i class="close">×</i>
+            <div class="btn-group">
+                <a href="#" id="exit" class="btn-style">取消</a>
+                <a href="#" id="uploadImg" class="btn-style">确定上传</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.3.0.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'js/cropper.js' %}" charset="utf-8"></script>
+{#    <script src="{% static 'js/' %}"></script>#}
+    <script>
+        (function  () {
+            var $image = $('#image');
+            // 模态框
+            var $modal = $('.modal');
+            var imgUrl = '';
+
+            var cropper = null;
+
+            // 初始裁切
+            $image.cropper({
+                aspectRatio: 16 / 9,
+            });
+
+            cropper = $image.data('cropper');
+
+
+            $('#uploadFile').change(function(e) {
+                var reads = new FileReader();
+                f =e.target.files[0];
+                reads.readAsDataURL(f);
+                reads.onload = function(e) {
+                    $image.attr('src', this.result);
+                    $image.cropper('destroy');
+                    $image.cropper({
+                        aspectRatio: 16 / 9,
+                    });
+                    cropper = $image.data('cropper');
+                }
+            });
+
+            $('#chkUpload').click(function() {
+                if($('.my-canvas').attr('id')) {
+                    $('.my-canvas')[0].remove();
+                }
+
+                $('.layer').show();
+                $('#chkUpload, .file-wrap').hide();
+
+                // 参数：设置输出图片的高度
+                // width, height, minWidth, minHeight,
+                var myCanvas = cropper.getCroppedCanvas({
+                // 最小高度和宽度
+                // 具体多少宽度你可以设置
+                    width: 300,
+                    height: 200
+                });
+
+                // 预览盒子的类名
+                myCanvas.className = 'box-center my-canvas';
+                $modal.append(myCanvas);
+                imgUrl = myCanvas.toDataURL('image/png');
+            });
+
+            $('#uploadImg').click(function(e) {
+                e.preventDefault();
+
+                var formData = new FormData();
+                var file = dataURLtoFile(imgUrl, 'image');
+
+                // 指定图片的文件加格式, 不指定图片无文件后缀, 因为图片是base64位编码
+                file.name = 'image.png';
+
+                // 后端接收文件参数的名字
+                formData.append('file', file);
+
+                $.ajax({
+                    type: 'post',
+                    // 上传地址
+                    url:'{% url "picture_upload" %}',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success:function(res) {
+                    // 上传成功后回调
+                        parent.parent.location.reload();
+                    },
+                    error:function(err) {
+                    // 上传失败后后回调
+                        console.log(err);
+                    }
+                })
+            });
+
+            // 关闭
+            $('.close, #exit').click(function() {
+                $('.layer').hide();
+                $('.my-canvas')[0].remove();
+                $('#chkUpload, .file-wrap').show();
+                parent.parent.location.reload();
+            });
+
+
+            // 把64位编码转换为file对象
+            function dataURLtoFile(dataurl, filename) {
+                var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], filename, { type: mime });
+            }
+        }());
+
+    </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="login_content clearfix">
+
+        <div class="container-fluid container clearfix">
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-8 col-xs-12 col-lg-offset-3 col-md-offset-2 col-xs-offset-0">
+
+                    <div class="login_register clearfix">
+
+                        <div class="login_box">
+                            <form class="form-horizontal" action="" method="post">
+                                {% csrf_token %}
+                                <fieldset>
+
+                                    <div id="legend" class="">
+                                        <legend class="text-center">用户登录</legend>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls" >
+                                            <input type="text" id="user_name"  name="loginUser" placeholder="用户名或手机号" class="form-control">
+                                            <span class="error_tip" id="username_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls password">
+                                            <input type="password" id="password" name="password" placeholder="登录密码" class="form-control">
+                                            <span class="error_tip" id="password_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            <div class="">
+                                                <input type="text" name="captcha" placeholder="验证码" class="form-control" required style="width: 55%;display: inline-block;margin-right: 8%;">
+                                                <a href="javascript:;" class="captcha"><img src="{{captcha.image_url}}" alt="点击换一张" id="id_captcha"></a>
+                                                <input value="{{ captcha.hashkey }}" name="hashkey" type="hidden" id="id_captcha_0">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if tips %}
+                                        <div>提示:<span>{{ tips }}</span></div>
+                                    {% endif %}
+
+                                    <div class="control-group form_each">
+                                        <div class="controls login_user">
+                                            <button type="submit" class="btn btn-primary form-control">马上登录</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="pass-reglink login_switch">还没有我的音乐账号？<a class="switch" href="javascript:;">免费注册</a></div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--login_box-->
+                        <div class="register_box clearfix">
+                            <form class="form-horizontal" action="" method="post">
+                                {% csrf_token %}
+                                <fieldset>
+
+                                    <div id="legend" class="">
+                                        <legend class="text-center">用户注册</legend>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            {{ user.username }}
+                                            <span class="error_tip" id="register_username_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            {{ user.mobile }}
+                                            <span class="error_tip" id="register_mobile_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            {{ user.password1 }}
+                                            <span class="error_tip" id="register_password1_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            {{ user.password2 }}
+                                            <span class="error_tip" id="register_password2_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            <div class="">
+                                                <input type="text" name="captcha" placeholder="验证码" class="form-control" required style="width: 55%;display: inline-block;margin-right: 8%;">
+                                                <a href="javascript:;" class="captcha2"><img src="{{captcha.image_url}}" alt="点击换一张" id="id_captcha_2"></a>
+                                                <input value="{{ captcha.hashkey }}" name="hashkey" type="hidden" id="id_captcha_1">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if tips %}
+                                        <div>提示:<span>{{ tips }}</span></div>
+                                    {% endif %}
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            <input id="agree" name="agree" checked="checked" type="checkbox" value="1"><label for="agree" class="autologon">已阅读并同意用户注册协议</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls">
+                                            <button type="submit" class="btn btn-primary form-control">免费注册</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group form_each">
+                                        <div class="controls register_switch">
+                                            <div class="pass-reglink">已有我的音乐帐号，<a class="switch" href="javascript:;">立即登录</a></div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!--register_box-->
+
+                    </div>
+                    <!--login_register-->
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script>
+
+        <!-- 动态刷新验证码js -->
+        $(document).ready(function(){
+            $('.captcha').click(function () {
+                $.getJSON("/user/refresh_captcha/", function (result) {
+                    $('#id_captcha').attr('src', result['image_url']);
+                    $('#id_captcha_0').val(result['hashkey'])
+                });
+            });
+        });
+
+        $(document).ready(function(){
+            $('.captcha2').click(function () {
+                $.getJSON("/user/refresh_captcha/", function (result) {
+                    $('#id_captcha_2').attr('src', result['image_url']);
+                    $('#id_captcha_1').val(result['hashkey'])
+                });
+            });
+        });
+    
+</script>
+
+<script src="{% static 'js/register.js' %}"></script>
+
+{% endblock script %}
+

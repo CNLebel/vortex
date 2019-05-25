@@ -1,0 +1,390 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+    <link rel="stylesheet" href="{% static 'css/disguise.css' %}">
+{% endblock link %}
+
+{% block title %}  <title>修改标题</title>  {% endblock title %}
+
+{% block content %}
+    <div class="pc">
+
+        <form class="form-horizontal">
+            {% csrf_token %}
+            <fieldset>
+
+                <div id="legend" class="">
+                    <legend class="">修改文章</legend>
+                </div>
+
+                <div class="row article_title article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">标题</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" id="pc_article_title" value="{{ blogarticles.article_title }}"  name="pc_article_title" placeholder="标题只能使用汉字和英文" class="form-control" required style="width: 50%;display: inline-block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_column article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">栏目</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="pc_which_column" class="input-xlarge form-control" required style="width: 50%;display: inline-block;">
+                                    <option value="{{ blogarticles.article_column.column_id }}">{{ blogarticles.article_column }}</option>
+                                    {% for column in columns %}
+                                        <option value="{{ column.column_id }}">{{ column.column }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row article_sort article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">分类</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="pc_which_sort" class="input-xlarge form-control" required style="width: 50%;display: inline-block;">
+                                    <option value="{{ blogarticles.article_sort.sort_id }}">{{ blogarticles.article_sort }}</option>
+                                    {% for sort in sorts %}
+                                    <option value="{{ sort.sort_id }}">{{ sort.sort_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{#                <div class="row article_label article_post_form">#}
+{#                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">#}
+{#                        <h2 style="font-size: 18px">标签</h2>#}
+{#                    </div>#}
+{#                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">#}
+{#                        <div class="control-group">#}
+{#                            <div class="controls ">#}
+{#                                {% for label in article_label %}#}
+{#                                <label class="checkbox inline-group" required style="margin:0 15px 0 30px;display: inline-block;">#}
+{#                                    <input class="checkbox" type="checkbox" id="{{ label.label_id }}" name="pc_article_label" value="{{ label.label_name }}"><h2 style="font-size: 18px">{{ label.label_name }}</h2>#}
+{#                                </label>#}
+{#                                {% empty %}#}
+{#                                    <p>你还没有创建任何标签</p>#}
+{#                                {% endfor %}#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+
+                <div class="row article_content article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">内容</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="textarea">
+                                    <textarea class="form-control" id="pc_mytextarea">{{ blogarticles.article_content }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row article_subimt article_post_form">
+                    <div class="controls ">
+                        <button class="btn btn-default btn-lg form-control" required style="width: 43%;display: inline-block; margin-left: 10%;" id="pc_deit_article">发 布</button>
+                    </div>
+                </div>
+
+                <input type="hidden" value="{{ blogarticles.article_id }}" class="pc_edit_article_id">
+            </fieldset>
+        </form>
+
+    </div>
+
+
+    <div class="mobile">
+        <form class="form-horizontal">
+        {% csrf_token %}
+            <fieldset>
+
+                <div id="legend" class="">
+                    <legend class="">发表文章</legend>
+                </div>
+
+                <div class="row article_title article_post_form">
+                    <div class=" col-xs-3 text-center">
+                        <h2 style="font-size: 18px">标题</h2>
+                    </div>
+                    <div class=" col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" id="mobile_article_title" value="{{ blogarticles.article_title }}"  name="mobile_article_title" placeholder="标题只能使用汉字和英文" class="form-control" required style="display: inline-block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_column article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">栏目</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="mobile_which_column" class="input-xlarge form-control" required style="display: inline-block;">
+                                    <option value="{{ blogarticles.article_column.column_id }}">{{ blogarticles.article_column }}</option>
+                                    {% for column in columns %}
+                                        <option value="{{ column.column_id }}">{{ column.column }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row article_sort article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">分类</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="mobile_which_sort" name="mobile_which_sort" class="input-xlarge form-control" required style="display: inline-block;">
+                                    <option value="{{ blogarticles.article_sort.sort_id }}">{{ blogarticles.article_sort }}</option>
+                                    {% for sort in sorts %}
+                                    <option value="{{ sort.sort_id }}">{{ sort.sort_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{#                <div class="row article_label article_post_form">#}
+{#                    <div class="col-xs-3 text-center">#}
+{#                        <h2 style="font-size: 18px">标签</h2>#}
+{#                    </div>#}
+{#                    <div class="col-xs-9 text-left">#}
+{#                        <div class="control-group">#}
+{#                            <div class="controls">#}
+{#                                {% for label in article_label %}#}
+{#                                <label class="checkbox inline-group" required style="margin:0 15px 0 30px;display: inline-block;">#}
+{#                                    <input class="checkbox" type="checkbox" id="{{ label.label_id }}" name="mobile_article_label" value="{{ label.label_name }}"><h2 style="font-size: 18px">{{ label.label_name }}</h2>#}
+{#                                </label>#}
+{#                                {% empty %}#}
+{#                                    <p>你还没有创建任何标签</p>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+                <div class="row article_content article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">内容</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="textarea">
+                                    <textarea class="form-control" id="mobile_mytextarea">{{ blogarticles.article_content }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_subimt article_post_form">
+                    <div class="col-xs-9 col-xs-offset-3 controls">
+                        <button class="btn btn-default btn-lg form-control" required style="display: inline-block;" id="mobile_deit_article">发 布</button>
+                    </div>
+                </div>
+
+                <input type="hidden" value="{{ blogarticles.article_id }}" class="mobile_edit_article_id">
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/jquery.tinymce.min.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/tinymce.min.js' %}"></script>
+
+{#    富文本配置#}
+    <script>
+        tinymce.init({
+            selector: '#pc_mytextarea',
+            plugins : 'advlist autolink link image lists preview code',
+            {#toolbar: 'undo redo | styleselect | bold italic | link image',#}
+            toolbar: 'image',
+
+            height: 500,
+            languageurl:'/home/litong/Projects/PyCharm/vortex/static/tinymce/js/tinymce/langs/zh_CN.js',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+
+
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '#mobile_mytextarea',
+            languageurl:'/home/litong/Projects/PyCharm/vortex/static/tinymce/js/tinymce/langs/zh_CN.js',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+
+
+        });
+    </script>
+
+
+    <script>
+    $(function () {
+
+        {#pc文章#}
+        $('#pc_deit_article').click(function () {
+
+            var pc_article_title = $("#pc_article_title").val();
+            var pc_column_id = $("#pc_which_column").val();
+            var pc_sort_id = $("#pc_which_sort").val();
+            var pc_article_content = tinyMCE.editors[0].getContent();
+
+            var pc_edit_article_id = $('.pc_edit_article_id').val()
+
+            data = {
+                "article_title":pc_article_title,
+                "article_content":pc_article_content,
+                "column_id":pc_column_id,
+                "sort_id":pc_sort_id,
+                "article_id":pc_edit_article_id,
+            };
+            $.ajax({
+                {#url: "edit_blogarticle/"+pc_edit_article_id,#}
+                url: "",
+                type: "POST",
+                data: data,
+                success: function(e){
+                    if(e=="1"){
+                        layer.msg("发布成功");
+                    }else if(e=="2"){
+                        layer.msg("发布失败") ;
+                    }else{
+                        layer.msg("都必须写，不能空。");
+                    }
+                },
+            });
+        });
+
+
+        {#mobile发表文章#}
+        $('#mobile_deit_article').click(function () {
+            var mobile_article_title = $("#mobile_article_title").val();
+            var mobile_column_id = $("#mobile_which_column").val();
+            var mobile_sort_id = $("#mobile_which_sort").val();
+            var mobile_article_content = tinyMCE.editors[1].getContent();
+
+            var mobile_edit_article_id = $('.mobile_edit_article_id').val()
+
+            data = {
+                "article_title":mobile_article_title,
+                "article_content":mobile_article_content,
+                "column_id":mobile_column_id,
+                "sort_id":mobile_sort_id,
+                "article_id":mobile_edit_article_id,
+            };
+
+            $.ajax({
+                {#url: "{% url 'blogarticle_post' blogarticles.article_id %}",#}
+                url: "",
+                type: "POST",
+                data: data,
+                success: function(e){
+                    if(e=="1"){
+                        layer.msg("发布成功");
+                    }else if(e=="2"){
+                        layer.msg("发布失败") ;
+                    }else{
+                        layer.msg("都必须写，不能空。");
+                    }
+                },
+            });
+
+        });
+
+
+
+
+
+    });
+    </script>
+
+{% endblock script %}
+

@@ -1,0 +1,350 @@
+/*--------------------base.html模板的公共样式---------------------*/
+.body{
+    background-color: #EBEBEB;
+}
+
+.footer{
+    margin: 116px 0 0 0;
+}
+
+/*--------------------base.html模板的公共样式---------------------*/
+
+
+
+
+/*-----------------login.html样式----------------------------*/
+.login_content{
+    margin-top: -20px;
+    background-image: linear-gradient(160deg, #00ffd5 20%,#008cff 80%);
+}
+
+.login_register{
+    margin: 120px 0 240px 0;
+}
+
+.form_each{
+    margin: 52px 0 26px 0;
+}
+
+.register_box{
+    display: none;
+}
+
+.error_tip{
+    color:#e62e2e;
+	display:none;
+}
+
+/*-----------------end-login.html样式----------------------------*/
+
+
+
+
+/*------------------------生活-sentiment.html------------------------*/
+
+
+.sentiment{
+    margin-top: -22px;
+
+    background-image: url("../images/life.jpg");
+    background-size: auto, auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.sentiment_row{
+    margin: 33px 0 0 0;
+}
+
+@media (max-width:980px) {
+    .sentiment_aside{
+        display: none;
+    }
+}
+
+@media (min-width:980px) {
+    .sentiment_aside{
+        display: block;
+    }
+}
+
+.sentiment_blockquote{
+
+}
+
+.sentiment_video{
+
+}
+
+.se_video{
+    width: 100%;
+    height: auto;
+}
+
+.sentiment_jumbotron{
+    margin: 44px 0 0 0;
+}
+
+.jumbotron_title {
+    color: #fff;
+    text-shadow: 0 0 5px #CCCCCC,
+    0 0 10px #CCCCCC,
+    0 0 15px #31b0d5,
+    0 0 20px #31b0d5,
+    0 0 25px #31b0d5,
+    0 0 30px #31b0d5,
+    0 0 50px #31b0d5,
+    0 0 80px #31b0d5,
+    0 0 100px #31b0d5,
+    0 0 150px #31b0d5;
+}
+
+.jumbotron_txt {
+    color: #fff;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+.jumbotron_txt:hover{
+    color: red;
+}
+
+
+.sentiment_article{
+
+}
+
+.aside_list{
+
+}
+
+.card-body{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #0f0f0f;
+    padding: 10px;
+    background-color: #ffffff;
+}
+.card-text{
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 70%;
+}
+
+/*----文本---*/
+.list-group {
+
+}
+
+.lf_bgtext {
+    background-image: url("../images/bj_1.gif");
+    background-size: auto;
+}
+
+/*------------------------end-sentiment.html------------------------*/
+
+
+
+
+/*------------------------about--------------------------*/
+
+.about {
+
+
+}
+
+.about_station {
+    padding: 25px 0 0 0;
+    margin: 25px 0 0 0;
+    line-height: 35px;
+}
+
+.about_ex_title {
+    font-size: 3rem;
+    font-weight: normal;
+    font-family: "Microsoft YaHei";
+    color: #444444;
+
+}
+
+.about_ex_content {
+    font-size: 2rem;
+    font-weight: normal;
+    font-family: "Microsoft YaHei";
+    color: #444444;
+}
+
+.problem_feedback {
+    margin: 33px 0 0 0;
+}
+
+/*------------------------end-about--------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.article{
+    border: #8c8c8c solid 2px;
+    margin: 0 0 22px 0;
+    background-color: white;
+}
+.article_Innerframe{
+    border: #1b6d85 solid 2px;
+
+}
+.article .article_Innerframe .article_content{
+    padding: 12px;
+}
+
+.Source_information{
+    background-color: #3399FF;
+}
+
+.browsing_operation{
+    background-color: #3399FF;
+    padding: 12px;
+    margin: 25px 0 116px 0;
+}
+
+
+/* index--搜所框*/
+.dh_bg{
+    background-image: url("../images/header_img.png");
+    background-size: 100%;
+}
+
+.btn-lg{
+    padding: 5px;
+    font-size: 16px;
+}
+.jumbotron {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #eee;
+}
+
+
+
+
+
+#recollections{
+    background-image: url(../images/recollections_bimage.jpg);
+}
+.page_header{
+    margin-top: 88px;
+}
+.understanding_fonts{
+    font-size: 2rem;
+    font-weight:normal;
+    font-family: "Microsoft YaHei";
+    height: 33px;
+    line-height: 33px;
+}
+
+.max_title{
+    font-size: 3rem;
+    font-weight:normal;
+    font-family: "Microsoft YaHei";
+    height: 116px;
+    line-height: 116px;
+    color: #444444;
+    margin: 45px 0 0 0;
+}
+
+.sentiment_list{
+    margin-top: 23px;
+}
+
+.sentiment{
+    padding: 22px;
+    background: white;
+}
+
+.sentiment_extract{
+    margin: 116px 0 116px 0;
+}
+
+.sentiment_extract_frame{
+    border: coral dashed 2px;
+    padding: 33px;
+}
+
+
+
+
+
+/*《-------------------------详情页-DetailedPage--------------》*/
+.blog-title{
+    margin-top: 30px;
+    margin-bottom: 0;
+    font-size: 60px;
+    font-weight: normal;
+}
+.blog-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.blog-post-title {
+    margin-bottom: 5px;
+    font-size: 40px;
+}
+.blog-post-meta {
+    margin-bottom: 20px;
+    color: #999;
+}
+.blog-post img{
+    display: block;
+    width: 100%;
+    height: 400px;
+}
+
+p {
+    margin: 0 0 10px;
+}
+.blog-description{
+    display: block;
+    text-align: center;
+}
+
+/**/
+.sidebar-module-inset {
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.sidebar-module {
+    padding: 15px;
+    margin: 0 -15px 15px;
+}
+
+/*评论*/
+
+
+
+
+
+
+
+
+
+
+

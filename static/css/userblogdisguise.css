@@ -1,0 +1,94 @@
+/*userblogbase.html模板公共样式*/
+.body_user{
+    background-image: linear-gradient(160deg, #eeefff 20%,#11FFF7 80%);
+}
+
+.userblogheader{
+    width:100%;
+    height:30px;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index: 1000;
+}
+
+.body_content{
+    margin: 100px 0 380px 0;
+}
+
+/*.usercontent_base{*/
+    /*width:100%;*/
+    /*height: 2000px;*/
+    /*overflow: hidden;*/
+/*}*/
+
+.hd {
+    width: 100%;
+    height: 45px;
+}
+
+
+.hd span {
+    display: inline-block;
+    width: 90px;
+    background-color: #2b542c;
+    color: #fff;
+    line-height: 45px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.hd span.current {
+    background-color: #F0FBEB;
+    color: black;
+    border: 2px solid #9BDF70;
+    border-bottom: none;
+    position: relative;
+    z-index: 800;
+}
+
+.bd li {
+    margin-top: -1px;
+    width: 100%;
+    height: 100%;
+    background-color: #F0FBEB;
+    border: 2px solid #9BDF70;
+    display: none;
+}
+.us_tab_hed{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    display: block;
+    font-weight: normal;
+}
+.bd li.current {
+    display: block;
+}
+#exampleSelect1 option{
+  width: 80%;
+}
+
+
+
+/*-------------------------userinfo.html---------------------------*/
+.portrait{
+    height: 280px;
+}
+
+.portrait_content{
+    margin-top: 66px;
+}
+
+.userinfo{
+    margin-top: 66px;
+}
+
+
+/*-----------------------end-userinfo.html-------------------------*/
+
+
+
+
+

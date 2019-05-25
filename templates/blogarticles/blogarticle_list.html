@@ -1,0 +1,223 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+    <link rel="stylesheet" href="{% static 'css/disguise.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+{% endblock link %}
+
+
+{% block content %}
+
+    <div class="pc">
+        <p class="text-right">
+            <a href="{% url 'blogarticle_post' %}" class="btn btn-primary">发表文章</a>
+        </p>
+
+        <ul class="list-group article_list">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4"><h3 class="text-center">分类</h3></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4"><h3 class="text-center">文章标题</h3></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4"><h3 class="text-center">操作</h3></div>
+                </div>
+            </li>
+            {% for column in blogarticle_columns %}
+
+            <li class="list-group-item">
+                <a href="javascript:;" class="column_option active">{{ column.column }}</a>
+                <ul class="column_list">
+                    {% for blogarticle in blogarticle  %}
+                        {% if blogarticle.article_column.column_id == column.column_id %}
+                        <li class="list-group article_list">
+
+                            <div class="row article_row">
+
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <h3 class="text-center">{{ blogarticle.article_sort }}</h3>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <h3 class="text-center">{{ blogarticle.article_title }}</h3>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+
+                                    <a style="display: none;" >{{ blogarticle.article_id }}</a>
+
+                                    <a name="pc_edit" target="view_window" class="edit_pc_article" href="{% url 'edit_blogarticle' blogarticle.article_id %}">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+
+                                    <a name="pc_delete" class="del_pc_article"  href="javascript:;">
+                                        <span class="glyphicon glyphicon-trash" style="margin-left: 20px;"></span>
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </li>
+            {% empty %}
+                <p>这里什么都没有</p>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+
+    <div class="mobile">
+
+        <p class="text-right">
+            <a href="{% url 'blogarticle_post' %}" class="btn btn-primary">发表文章</a>
+        </p>
+
+        <ul class="list-group article_list">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-3"><h3 class="text-center">分类</h3></div>
+                    <div class="col-sm-4 col-xs-6"><h3 class="text-center">文章标题</h3></div>
+                    <div class="col-sm-4 col-xs-3"><h3 class="text-center">操作</h3></div>
+                </div>
+            </li>
+            {% for column in blogarticle_columns %}
+
+            <li class="list-group-item">
+                <a href="javascript:;" class="column_option active">{{ column.column }}</a>
+                <ul class="column_list">
+                    {% for blogarticle in blogarticle  %}
+                        {% if blogarticle.article_column.column_id == column.column_id %}
+                        <li class="list-group article_list">
+
+                            <div class="row article_row">
+
+                                <div class="col-sm-4 col-xs-3">
+                                    <h3 class="text-center">{{ blogarticle.article_sort }}</h3>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-6">
+                                    <h3 class="text-center">{{ blogarticle.article_title }}</h3>
+                                </div>
+
+                                <div class="col-sm-4 col-xs-3 text-center">
+
+                                    <a style="display: none;" >{{ blogarticle.article_id }}</a>
+
+                                    <a name="pc_edit" target="view_window" class="edit_mobile_article" href="{% url 'edit_blogarticle' blogarticle.article_id %}">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+
+                                    <a name="pc_delete" class="del_mobile_article"  href="javascript:;">
+                                        <span class="glyphicon glyphicon-trash" style="margin-left: 20px;"></span>
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </li>
+            {% empty %}
+                <p>这里什么都没有</p>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+
+    <script>
+        $(function () {
+            $('.column_option').click(function() {
+                $(this).next().slideDown().parent().siblings().children('ul').slideUp();
+            });
+        });
+
+
+
+
+         // del_pc_article的删除弹窗程序
+        $('.del_pc_article').click(function () {
+            // 获取删除文章的标题
+            var del_pc_article_title =$(this).parents('.article_row').children("div").eq(1).children("h3").text();
+
+            //获取删除的文章所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_pc_article_id = $(this).siblings('a').eq(0).text();
+
+            layer.open({
+                type:1,
+                skin: "layui-layer-rim",
+                area: ["400px","200px"],
+                title: "删除文章",
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_pc_article_title +'}文章</p></div>',
+                btn: ['确定', '取消'],
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle" %}',
+                        type: "POST",
+                        data: {"article_id":del_pc_article_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+
+         // del_pc_article的删除弹窗程序
+        $('.del_mobile_article').click(function () {
+            // 获取删除文章的标题
+            var del_mobile_article_title =$(this).parents('.article_row').children("div").eq(1).children("h3").text();
+
+            //获取删除的文章所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_mobile_article_id = $(this).siblings('a').eq(0).text();
+
+            layer.open({
+                type:1,
+                skin: "layui-layer-rim",
+                area: ["400px","200px"],
+                title: "删除文章",
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_mobile_article_title +'}文章</p></div>',
+                btn: ['确定', '取消'],
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle" %}',
+                        type: "POST",
+                        data: {"article_id":del_mobile_article_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+
+
+    </script>
+
+{% endblock script %}
+

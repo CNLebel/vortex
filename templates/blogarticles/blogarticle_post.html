@@ -1,0 +1,513 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+    <link rel="stylesheet" href="{% static 'css/disguise.css' %}">
+{% endblock link %}
+
+{% block title %} <title>文章发布</title> {% endblock title %}
+
+{% block content %}
+    <div class="pc">
+
+        <form class="form-horizontal">
+            {% csrf_token %}
+            <fieldset>
+
+                <div id="legend" class="">
+                    <legend class="">发表文章</legend>
+                </div>
+
+                <div class="row article_title article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">标题</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" id="pc_article_title"  name="pc_article_title" placeholder="标题只能使用汉字和英文" class="form-control" required style="width: 50%;display: inline-block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_column article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">栏目</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="pc_which_column" class="input-xlarge form-control" required style="width: 50%;display: inline-block;">
+                                    {% for column in blogarticle_columns %}
+                                        <option value="{{ column.column_id }}">{{ column.column }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row article_sort article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">分类</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="pc_which_sort" class="input-xlarge form-control" required style="width: 50%;display: inline-block;">
+                                    {% for sort in sort %}
+                                    <option value="{{ sort.sort_id }}">{{ sort.sort_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_label article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">标签</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls ">
+                                {% for label in article_label %}
+                                <label class="checkbox inline-group" required style="margin:0 15px 0 30px;display: inline-block;">
+                                    <input class="checkbox" type="checkbox" id="{{ label.label_id }}" name="pc_article_label" value="{{ label.label_name }}"><h2 style="font-size: 18px">{{ label.label_name }}</h2>
+                                </label>
+                                {% empty %}
+                                    <p>你还没有创建任何标签</p>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_content article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">内容</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="textarea">
+                                    <textarea class="form-control" id="pc_mytextarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_abstract article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">摘要</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div id="pc_abstract_img" style="height: 295px; border: #8a6d3b solid 1px;">
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <textarea name="" id="pc_abstract" class="form-control"  rows="14"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_subimt article_post_form">
+                    <div class="controls ">
+                        <button class="btn btn-default btn-lg form-control" required style="width: 43%;display: inline-block; margin-left: 10%;" id="pc_publish_article">发 布</button>
+                    </div>
+                </div>
+
+
+            </fieldset>
+        </form>
+
+    </div>
+
+
+    <div class="mobile">
+        <form class="form-horizontal">
+        {% csrf_token %}
+            <fieldset>
+
+                <div id="legend" class="">
+                    <legend class="">发表文章</legend>
+                </div>
+
+                <div class="row article_title article_post_form">
+                    <div class=" col-xs-3 text-center">
+                        <h2 style="font-size: 18px">标题</h2>
+                    </div>
+                    <div class=" col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" id="mobile_article_title"  name="mobile_article_title" placeholder="标题只能使用汉字和英文" class="form-control" required style="display: inline-block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_column article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">栏目</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="mobile_which_column" class="input-xlarge form-control" required style="display: inline-block;">
+                                    {% for column in blogarticle_columns %}
+                                        <option value="{{ column.column_id }}">{{ column.column }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row article_sort article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">分类</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <select id="mobile_which_sort" name="mobile_which_sort" class="input-xlarge form-control" required style="display: inline-block;">
+                                    {% for sort in sort %}
+                                    <option value="{{ sort.sort_id }}">{{ sort.sort_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_label article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">标签</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                {% for label in article_label %}
+                                <label class="checkbox inline-group" required style="margin:0 15px 0 30px;display: inline-block;">
+                                    <input class="checkbox" type="checkbox" id="{{ label.label_id }}" name="mobile_article_label" value="{{ label.label_name }}"><h2 style="font-size: 18px">{{ label.label_name }}</h2>
+                                </label>
+                                {% empty %}
+                                    <p>你还没有创建任何标签</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_content article_post_form">
+                    <div class="col-xs-3 text-center">
+                        <h2 style="font-size: 18px">内容</h2>
+                    </div>
+                    <div class="col-xs-9 text-left">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="textarea">
+                                    <textarea name="mobile_mytextarea" class="form-control" id="mobile_mytextarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row article_abstract article_post_form">
+                    <div class="col-lg-1 col-md-1 col-xs-2 text-right">
+                        <h2 style="font-size: 18px">摘要</h2>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-xs-10 text-left">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div id="mobile_abstract_img" style="height: 295px; border: #8a6d3b solid 1px;">
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <textarea name="" id="mobile_abstract" class="form-control"  rows="14"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row article_subimt article_post_form">
+                    <div class="col-xs-9 col-xs-offset-3 controls">
+                        <button class="btn btn-default btn-lg form-control" required style="display: inline-block;" id="mobile_publish_article">发 布</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script src="{% static 'js/json2.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/jquery.tinymce.min.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/tinymce.min.js' %}"></script>
+
+
+{#    富文本配置#}
+    <script>
+        tinymce.init({
+            selector: '#pc_mytextarea',
+            plugins : 'advlist autolink link image lists preview code',
+            toolbar:'undo redo forecolor bold italic | alignleft aligncenter alignright | code',
+            formats: {
+                alignright: {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'right'},
+                bold: {inline:'span', styles:{color:'#f00'} },
+                forecolor: {inline : 'span', styles : {color:'%value',fontWeight:'700'} },
+                custom_format: {block : 'h1', attributes : {title:'Header'}, styles : {color:'red'} }
+            },
+
+            height: 500,
+            {#language:'zh_CN',#}
+            languageurl:'{% static "tinymce/js/tinymce/langs/zh_CN.js" %}',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+
+
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '#mobile_mytextarea',
+            plugins : 'advlist autolink link image lists preview code',
+            toolbar:'undo redo forecolor bold italic | alignleft aligncenter alignright | code',
+            formats: {
+                alignright: {selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', classes : 'right'},
+                bold: {inline:'span', styles:{color:'#f00'} },
+                forecolor: {inline : 'span', styles : {color:'%value',fontWeight:'700'} },
+                custom_format: {block : 'h1', attributes : {title:'Header'}, styles : {color:'red'} }
+            },
+            languageurl:'{% static "tinymce/js/tinymce/langs/zh_CN.js" %}',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+
+
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '#pc_abstract_img',
+            plugins : 'image',
+            toolbar: 'image',
+            inline: true,
+            languageurl:'{% static "tinymce/js/tinymce/langs/zh_CN.js" %}',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '#mobile_abstract_img',
+            plugins : 'image',
+            toolbar: 'image',
+            inline: true,
+            languageurl:'{% static "tinymce/js/tinymce/langs/zh_CN.js" %}',
+            images_upload_handler: function (blobInfo, succFun, failFun) {
+                var xhr, formData;
+                var file = blobInfo.blob();//转化为易于理解的file对象
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', "{% url 'upload_img' %}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failFun('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.location != 'string') {
+                        failFun('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    succFun(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', file, file.name );
+                xhr.send(formData);
+            }
+        });
+    </script>
+
+
+    <script>
+    $(function () {
+
+        {#pc发表文章#}
+        $('#pc_publish_article').click(function () {
+
+            var pc_article_title = $("#pc_article_title").val();
+            var pc_column_id = $("#pc_which_column").val();
+            var pc_sort_id = $("#pc_which_sort").val();
+            var pc_abstract = $("#pc_abstract").val();
+            var pc_article_content = tinyMCE.editors[0].getContent();
+            var pc_abstract_img = tinyMCE.editors[2].getContent();
+
+            var article_labels = [];
+            $.each($("input[name='pc_article_label']:checked"),function () {
+                article_labels.push($(this).val());
+            });
+
+            data = {
+                "article_title": pc_article_title,
+                "article_content": pc_article_content,
+                "column_id": pc_column_id,
+                "sort_id": pc_sort_id,
+                "abstract":pc_abstract,
+                "abstract_img":pc_abstract_img,
+                "article_label": JSON.stringify(article_labels),
+
+            };
+
+            $.ajax({
+                url: "{% url 'blogarticle_post' %}",
+                type: "POST",
+                data: data,
+                success: function(e){
+                    if(e=="1"){
+                        layer.msg("发布成功");
+                    }else if(e=="2"){
+                        layer.msg("发布失败") ;
+                    }else{
+                        layer.msg("都必须写，不能空。");
+                    }
+                },
+            });
+        });
+
+
+        {#mobile发表文章#}
+        $('#mobile_publish_article').click(function () {
+            var mobile_article_title = $("#mobile_article_title").val();
+            var mobile_column_id = $("#mobile_which_column").val();
+            var mobile_sort_id = $("#mobile_which_sort").val();
+            var mobile_abstract = $("#mobile_abstract").val();
+            var mobile_article_content = tinyMCE.editors[1].getContent();
+            var mobile_abstract_img = tinyMCE.editors[3].getContent();
+
+            var article_labels = [];
+            $.each($("input[name='mobile_article_label']:checked"),function () {
+                article_labels.push($(this).val());
+            });
+
+            data = {
+                "article_title":mobile_article_title,
+                "article_content":mobile_article_content,
+                "column_id":mobile_column_id,
+                "sort_id":mobile_sort_id,
+                "abstract":mobile_abstract,
+                "abstract_img":mobile_abstract_img,
+                "article_label": JSON.stringify(article_labels),
+            };
+
+            $.ajax({
+                url: "{% url 'blogarticle_post' %}",
+                type: "POST",
+                data: data,
+                success: function(e){
+                    if(e=="1"){
+                        layer.msg("发布成功");
+                    }else if(e=="2"){
+                        layer.msg("发布失败") ;
+                    }else{
+                        layer.msg("都必须写，不能空。");
+                    }
+                },
+            });
+
+        });
+
+
+
+
+
+    });
+    </script>
+
+{% endblock script %}
+

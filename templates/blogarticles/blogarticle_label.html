@@ -1,0 +1,310 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+{% endblock link %}
+
+{% block title %} <title>标签管理</title> {% endblock title %}
+
+{% block content %}
+<div class="pc">
+    <p class="text-right">
+        <button class="btn btn-primary" id="add_pc_label">添加新标签</button>
+    </p>
+
+    <table class="table table-hover">
+        <tr>
+            <td>序号</td>
+            <td>标签名称</td>
+            <td>操作</td>
+        </tr>
+        {% for label in article_label %}
+        <tr>
+            <td>{{ label.counter }}</td>
+            <td>{{ label.label_name }}</td>
+            <td>
+                <a style="display: none;" >
+                    {{ label.label_id }}
+                </a>
+
+                <a name="pc_edit" class="edit_pc_label" href="javascript:;">
+                     <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+
+                <a name="pc_delete" class="del_pc_label"  href="javascript:;">
+                    <span class="glyphicon glyphicon-trash" style="margin-left: 20px;"></span>
+                </a>
+
+            </td>
+        </tr>
+        {% empty %}
+        <p>这里什么都没有</p>
+        {% endfor %}
+    </table>
+
+</div>
+
+<div class="mobile">
+    <p class="text-right">
+        <button class="btn btn-primary" id="add_mobile_label">添加新标签</button>
+    </p>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 text-left"><h3>序号</h3></div>
+                <div class="col-xs-7 text-center"><h3>标签名称</h3></div>
+                <div class="col-xs-3 text-right"><h3>操作</h3></div>
+            </div>
+        </li>
+        {% for label in article_label %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 text-left"><h3>{{ forloop.counter }}</h3></div>
+                <div class="col-xs-7 text-center"><h3>{{ label.label_name }}</h3></div>
+                <div class="col-xs-3 text-right">
+                    <h3>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a style="display: none;" >{{ label.label_id }}</a>
+                                </li>
+
+                                <li>
+                                    <a name="mobile_edit" class="edit_mobile_label" href="javascript:;">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                </li>
+
+                                <li class="divider"></li>
+
+                                <li><a name="mobile_delete" class="del_mobile_label"  href="javascript:;">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item">你还没有创建任何标签</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/layer/layer.js' %}"></script>
+<script>
+    $(function () {
+
+        // pc_label的添加弹窗程序
+        $('#add_pc_label').click(function () {
+           var pc_label_layer = layer.open({
+               type: 1,
+               skin: "layui-layer-rim",
+               area: ["400px","200px"],
+               title: "新增标签",
+               content:'<div class="text-center" style="margin-top: 20px"><p>请输入新的标签名称</p><p><input type="text" id="id_pc_label"></p></div>',
+               btn: ['添加','取消'],
+               yes:function (pc_label_layer, layero) {
+                   pc_label_name = $('#id_pc_label').val();
+                   $.ajax({
+                      url:'{% url "blogarticle_label" %}',
+                      type: 'POST',
+                      data: {"label":pc_label_name},
+                      success: function (e) {
+                          if(e == "1"){
+                              parent.location.reload();
+                              layer.msg("已经成功添加!");
+                          }else{
+                              layer.msg("此栏目已有，请更换名称!");
+                          }
+                      },
+                   });
+               },
+               btn2:function (pc_label_layer, layero) {
+                   layer.close(pc_label_layer);
+               }
+           });
+       });
+
+
+        // mobile_label的添加弹窗程序
+        $('#add_mobile_label').click(function () {
+            var mobile_label_layer = layer.open({
+                title:[
+                    '新增标签',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top: 20px"><p>请输入新的标签名称</p><p><input type="text" id="id_mobile_label"></p></div>',
+                btn:['添加','取消'],
+                yes:function (mobile_label_layer,layero) {
+                    mobile_label_name=$('#id_mobile_label').val();
+                    $.ajax({
+                        url:'{% url "blogarticle_label" %}',
+                        type: 'POST',
+                        data: {"label":mobile_label_name},
+                        success: function (e) {
+                            if(e == "1"){
+                                parent.location.reload();
+                                layer.msg("已经成功添加!");
+                            }else{
+                                layer.msg("此标签已有，请更换名称!");
+                            }
+                      },
+                    });
+                },
+                btn2:function (mobile_label_layer,layero) {
+                    layer.close(mobile_label_layer);
+                }
+            });
+        });
+
+        // deit_pc_label的修改弹窗程序
+
+        $('.edit_pc_label').click(function () {
+            // 获取修改的标签名称
+            var edit_pc_label_name =$(this).parents('tr').children("td").eq(1).text();
+
+            //获取修改的标签所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            // var edit_pc_column_id = $(this).parents('tr').children("td").eq(2).children("a").eq(0).text();
+            // 与上面的作用一样，都是获取display:none;的a标签，但所做的工作量比上面的要少很多
+            var edit_pc_label_id = $(this).siblings('a').eq(0).text();
+
+            var edit_pc_label_layer = layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["400px", "200px"],
+                title: "编辑标签",
+                content: '<div class="text-center" style="margin-top:20px"><p>请编辑的标签名称</p><p><input type="text" id="edit_id_pc_label" value="'+ edit_pc_label_name +'"></p></div>',
+                btn: ['修改','取消'],
+                yes: function (index, layero) {
+                    edit_id_pc_label = $("#edit_id_pc_label").val();
+                    $.ajax({
+                        url: "{% url 'edit_blogarticle_label' %}",
+                        type: "POST",
+                        data: {"label_id":edit_pc_label_id, "label_name":edit_id_pc_label},
+                        success: function (e) {
+                            if (e == "1"){
+                                parent.location.reload();
+                                layer.msg("修改成功!");
+                            }else {
+                                layer.msg("新的标签名称没有保存,修改失败!")
+                            }
+                        },
+                    });
+                },
+            });
+        });
+
+        //edit_mobile_label的修改弹窗程序
+            $('.edit_mobile_label').click(function () {
+            var edit_mobile_label_name = $(this).parents('.row').children('div').eq(1).children('h3').text();
+            var edit_mobile_label_id = $(this).parents('ul').children('li').eq(0).children('a').text();
+            var edit_mobile_label_layer = layer.open({
+                title:[
+                    '编辑标签',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top: 20px"><p>编辑的标签名称</p><p><input type="text" id="edit_id_mobile_label"  value="'+ edit_mobile_label_name +'"></p></div>',
+                btn:['修改','取消'],
+                yes:function (index,layero) {
+                    edit_id_mobile_label=$('#edit_id_mobile_label').val();
+                    $.ajax({
+                        url: "{% url 'edit_blogarticle_label' %}",
+                        type: "POST",
+                        data: {"label_id":edit_mobile_label_id, "label_name":edit_id_mobile_label},
+                        success: function (e) {
+                            if (e == "1"){
+                                parent.location.reload();
+                                layer.msg("修改成功!");
+                            }else {
+                                layer.msg("新的标签名称没有保存,修改失败!")
+                            }
+                        },
+                    });
+                },
+            });
+        });
+
+        // del_pc_label的删除弹窗程序
+        $('.del_pc_label').click(function () {
+            // 获取删除的栏目名称
+            var del_pc_label_name =$(this).parents('tr').children("td").eq(1).text();
+
+            //获取修改的标签所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_pc_label_id = $(this).siblings('a').eq(0).text();
+            layer.open({
+                type:1,
+                skin: "layui-layer-rim",
+                area: ["400px","200px"],
+                title: "删除标签",
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_pc_label_name +'}标签</p></div>',
+                btn: ['确定', '取消'],
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle_label" %}',
+                        type: "POST",
+                        data: {"label_id":del_pc_label_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+        //del_mobile_label的删除弹窗程序
+        $('.del_mobile_label').click(function () {
+            // 获取删除的标签名称
+            var del_mobile_label_name = $(this).parents('.row').children('div').eq(1).children('h3').text();
+
+            // 获取修改的标签所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_mobile_label_id = $(this).parents('ul').children('li').eq(0).children('a').text();
+
+
+            var del_mobile_label_layer = layer.open({
+                title:[
+                    '删除标签',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_mobile_label_name +'}标签</p></div>',
+                btn:['修改','取消'],
+
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle_label" %}',
+                        type: "POST",
+                        data: {"label_id":del_mobile_label_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+
+
+    });
+
+</script>
+
+{% endblock script %}
+

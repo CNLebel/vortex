@@ -1,0 +1,129 @@
+
+@media (max-width: 480px) {
+	/* 按钮公共样式 */
+	.btn-style {
+	  width: 100%;
+	  display: flex;
+	  height: 36px;
+	  justify-content: center;
+	  color: #fff;
+	  margin: 0 auto;
+	  display: inline-block;
+	  background: #0060b1;
+	}
+	/* 裁切区域 */
+	.container-upload {
+	  position: fixed;
+	  width: 100%;
+	  height: 100%;
+	  z-index: 1000;
+	  box-sizing: border-box;
+	  top: 0;
+	  padding: 0;
+	  background: rgba(0, 0, 0, .3);
+	}
+	.container-upload .btn-group {
+		position: absolute;
+		width: 100%;
+		top: 430px;
+	}
+	.btn-group {
+	  text-align: center;
+	  padding-top: 20px;
+	}
+	.btn-group #show {
+	  width: 100%;
+	  margin-left: 20px;
+	  margin-top: -100px;
+	}
+	.file-wrap {
+		width: 100%;
+	}
+	.file-wrap #show {
+		margin-left: 0;
+		margin-top: 20px;
+	}
+	.btn-group #uploadFile {
+	  width: 100%;
+	  opacity: 0;
+	  z-index: 6;
+	  height: 40px;
+	  cursor: pointer;
+	  top: 20px;
+	  font-size: 0;
+	  vertical-align: top;
+	}
+	/* 确定上传区域 */
+	.tailoring {
+	  width: 100%;
+	  height: 100%;
+	}
+	.tailoring img {
+	  max-width: 100%;
+	}
+	.layer {
+	  width: 100%;
+	  height: 100%;
+	  position: fixed;
+	  left: 0;
+	  display: none;
+	  top: 0;
+	  z-index: 2000;
+	  background: rgba(0, 0, 0, .8);
+	}
+	.modal {
+	  position: fixed;
+	   width: 100%;
+	  height: 100%;
+	  background: none;
+	}
+	.modal .close {
+	  position: absolute;
+	  right: 20px;
+	  top: 0px;
+	  font-size: 50px;
+	  cursor: pointer;
+	  color: #fff;
+	}
+	.modal .btn-style {
+	  line-height: 36px;
+	}
+	.modal .btn-group {
+		position: absolute;
+		width: 100%;
+		bottom: 80px;
+	}
+	.modal .btn-group #uploadImg {
+		margin: 20px 0;
+	}
+	.box-center {
+	  left: 50%;
+	  top: 50%;
+	  transform: translate(-50%, -50%);
+	}
+	.my-canvas {
+	  position: absolute;
+	  transform: translate(-50%, -80%);
+	}
+	#uploadImg {
+	  margin: 80px auto 0;
+	}
+}
+
+@media (max-height: 578px) {
+	.container-upload .btn-group {
+		position: absolute;
+		width: 100%;
+		top: 320px;
+	}
+
+}
+
+@media (max-width: 400px) {
+	.cropper-container {
+	    position: absolute;
+	    width: 320px;
+	    height: 500px;
+	    top: -50px;
+	}
+}

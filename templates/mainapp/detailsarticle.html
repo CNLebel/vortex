@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+<div class="container">
+
+    <div class="blog-header">
+        <p class="lead blog-description">
+        <ol class="breadcrumb">
+            <li><a href="#">{{ blogarticle.article_sort }}</a></li>
+            <li><a href="#">{{ blogarticle.article_label }}</a></li>
+            <li class="active">{{ blogarticle.article_title }}</li>
+        </ol>
+        </p>
+        <hr style="background-color: black">
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7 col-md-8 col-sm-12 col-xs-12">
+            <div class="blog-post">
+                <p class="blog-post-meta">
+                    发布时间 {{ blogarticle.article_update }} &nbsp;&nbsp;
+                    浏览量&nbsp;1234{{ blogarticle.article_views }}&nbsp;&nbsp;
+                    作者:<a href="#">{{ blogarticle.article_author }}</a></p>
+                </p>
+                <div>
+                    {{ blogarticle.article_content | safe }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}

@@ -1,0 +1,307 @@
+{% extends 'userblogbase.html' %}
+{% load static %}
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/blogarticle_css.css' %}">
+{% endblock link %}
+
+{% block title %} <title>栏目管理</title> {% endblock title %}
+
+{% block content %}
+<div class="pc">
+    <p class="text-right">
+        <button class="btn btn-primary" id="add_pc_column">添加新栏目</button>
+    </p>
+
+    <table class="table table-hover">
+        <tr>
+            <td>序号</td>
+            <td>栏目名称</td>
+            <td>操作</td>
+        </tr>
+        {% for column in columns %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ column.column }}</td>
+            <td>
+                <a style="display: none;" >
+                    {{ column.column_id }}
+                </a>
+
+                <a name="pc_edit" class="edit_pc_column" href="javascript:;">
+                     <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+
+                <a name="pc_delete" class="del_pc_column"  href="javascript:;">
+                    <span class="glyphicon glyphicon-trash" style="margin-left: 20px;"></span>
+                </a>
+
+            </td>
+        </tr>
+        {% empty %}
+        <p>这里什么都没有</p>
+        {% endfor %}
+    </table>
+
+</div>
+
+<div class="mobile">
+    <p class="text-right">
+        <button class="btn btn-primary" id="add_mobile_column">添加新栏目</button>
+    </p>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 text-left"><h3>序号</h3></div>
+                <div class="col-xs-7 text-center"><h3>栏目名称</h3></div>
+                <div class="col-xs-3 text-right"><h3>操作</h3></div>
+            </div>
+        </li>
+        {% for column in columns %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 text-left"><h3>{{ forloop.counter }}</h3></div>
+                <div class="col-xs-7 text-center"><h3>{{ column.column }}</h3></div>
+                <div class="col-xs-3 text-right">
+                    <h3>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a style="display: none;" >{{ column.column_id }}</a>
+                                </li>
+
+                                <li>
+                                    <a name="mobile_edit" class="edit_mobile_column" href="javascript:;">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                </li>
+
+                                <li class="divider"></li>
+
+                                <li><a name="mobile_delete" class="del_mobile_column"  href="javascript:;">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item">你还没有创建任何栏目</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/layer/layer.js' %}"></script>
+<script>
+    $(function () {
+
+        // pc_column的添加弹窗程序
+        $('#add_pc_column').click(function () {
+           var pc_column_layer = layer.open({
+               type: 1,
+               skin: "layui-layer-rim",
+               area: ["400px","200px"],
+               title: "新增栏目",
+               content:'<div class="text-center" style="margin-top: 20px"><p>请输入新的栏目名称</p><p><input type="text" id="id_pc_column"></p></div>',
+               btn: ['添加','取消'],
+               yes:function (pc_column_layer, layero) {
+                   pc_column_name = $('#id_pc_column').val();
+                   $.ajax({
+                      url:'{% url "blogarticle_column" %}',
+                      type: 'POST',
+                      data: {"column":pc_column_name},
+                      success: function (e) {
+                          if(e == "1"){
+                              parent.location.reload();
+                              layer.msg("已经成功添加!");
+                          }else{
+                              layer.msg("此栏目已有，请更换名称!");
+                          }
+                      },
+                   });
+               },
+               btn2:function (pc_column_layer, layero) {
+                   layer.close(pc_column_layer);
+               }
+           });
+       });
+
+        // mobile_column的添加弹窗程序
+        $('#add_mobile_column').click(function () {
+            var mobile_column_layer = layer.open({
+                title:[
+                    '新增栏目',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top: 20px"><p>请输入新的栏目名称</p><p><input type="text" id="id_mobile_column"></p></div>',
+                btn:['添加','取消'],
+                yes:function (mobile_column_layer,layero) {
+                    mobile_column_name=$('#id_mobile_column').val();
+                    $.ajax({
+                        url:'{% url "blogarticle_column" %}',
+                        type: 'POST',
+                        data: {"column":mobile_column_name},
+                        success: function (e) {
+                            if(e == "1"){
+                                parent.location.reload();
+                                layer.msg("已经成功添加!");
+                            }else{
+                                layer.msg("此栏目已有，请更换名称!");
+                            }
+                      },
+                    });
+                },
+                btn2:function (mobile_column_layer,layero) {
+                    layer.close(pc_column_layer);
+                }
+            });
+        });
+
+        // deit_pc_column的修改弹窗程序
+        $('.edit_pc_column').click(function () {
+            // 获取修改的栏目名称
+            var edit_pc_column_name =$(this).parents('tr').children("td").eq(1).text();
+
+            //获取修改的栏目所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            // var edit_pc_column_id = $(this).parents('tr').children("td").eq(2).children("a").eq(0).text();
+            // 与上面的作用一样，都是获取display:none;的a标签，但所做的工作量比上面的要少很多
+            var edit_pc_column_id = $(this).siblings('a').eq(0).text();
+
+            var edit_pc_column_layer = layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["400px", "200px"],
+                title: "编辑栏目",
+                content: '<div class="text-center" style="margin-top:20px"><p>请编辑的栏目名称</p><p><input type="text" id="edit_id_pc_column" value="'+ edit_pc_column_name +'"></p></div>',
+                btn: ['修改','取消'],
+                yes: function (index, layero) {
+                    edit_id_pc_column = $("#edit_id_pc_column").val();
+                    $.ajax({
+                        url: "{% url 'edit_blogarticle_column' %}",
+                        type: "POST",
+                        data: {"column_id":edit_pc_column_id, "column_name":edit_id_pc_column},
+                        success: function (e) {
+                            if (e == "1"){
+                                parent.location.reload();
+                                layer.msg("修改成功!");
+                            }else {
+                                layer.msg("新的名称没有保存,修改失败!")
+                            }
+                        },
+                    });
+                },
+            });
+        });
+
+        //edit_mobile_column的修改弹窗程序
+            $('.edit_mobile_column').click(function () {
+            var edit_mobile_column_name = $(this).parents('.row').children('div').eq(1).children('h3').text();
+            var edit_mobile_column_id = $(this).parents('ul').children('li').eq(0).children('a').text();
+            var edit_mobile_column_layer = layer.open({
+                title:[
+                    '编辑栏目',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top: 20px"><p>请编辑的栏目名称</p><p><input type="text" id="edit_id_mobile_column"  value="'+ edit_mobile_column_name +'"></p></div>',
+                btn:['修改','取消'],
+                yes:function (index,layero) {
+                    edit_id_mobile_column=$('#edit_id_mobile_column').val();
+                    $.ajax({
+                        url: "{% url 'edit_blogarticle_column' %}",
+                        type: "POST",
+                        data: {"column_id":edit_mobile_column_id, "column_name":edit_id_mobile_column},
+                        success: function (e) {
+                            if (e == "1"){
+                                parent.location.reload();
+                                layer.msg("修改成功!");
+                            }else {
+                                layer.msg("新的名称没有保存,修改失败!")
+                            }
+                        },
+                    });
+                },
+            });
+        });
+
+        // del_pc_column的删除弹窗程序
+        $('.del_pc_column').click(function () {
+            // 获取删除的栏目名称
+            var del_pc_column_name =$(this).parents('tr').children("td").eq(1).text();
+
+            //获取修改的栏目所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_pc_column_id = $(this).siblings('a').eq(0).text();
+            layer.open({
+                type:1,
+                skin: "layui-layer-rim",
+                area: ["400px","200px"],
+                title: "删除栏目",
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_pc_column_name +'}栏目</p></div>',
+                btn: ['确定', '取消'],
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle_column" %}',
+                        type: "POST",
+                        data: {"column_id":del_pc_column_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+        //del_mobile_column的删除弹窗程序
+        $('.del_mobile_column').click(function () {
+            // 获取删除的栏目名称
+            var del_mobile_column_name = $(this).parents('.row').children('div').eq(1).children('h3').text();
+
+            // 获取修改的栏目所在数据库储存的ID,id放在一个display:none;的a标签里和this是兄弟元素
+            var del_mobile_column_id = $(this).parents('ul').children('li').eq(0).children('a').text();
+
+            var del_mobile_column_layer = layer.open({
+                title:[
+                    '删除栏目',
+                    'background-color:#8DCE16; color:#fff;'
+                ],
+                content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除{'+ del_mobile_column_name +'}栏目</p></div>',
+                btn:['修改','取消'],
+                yes: function () {
+                    $.ajax({
+                        url: '{% url "del_blogarticle_column" %}',
+                        type: "POST",
+                        data: {"column_id":del_mobile_column_id},
+                        success: function (e) {
+                            if(e=="1"){
+                                parent.location.reload();
+                                layer.msg("已成功删除!");
+                            }else {
+                                layer.msg("删除失败!");
+                            }
+                        },
+                    })
+                },
+            });
+        });
+
+
+
+    });
+
+
+</script>
+
+{% endblock script %}
+

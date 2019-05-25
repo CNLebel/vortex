@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} <title> 读书感言</title> {% endblock title %}
+
+{% block content %}
+    <div class="page_header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 text-center">
+                    <h3 class="understanding_fonts"> 生命在于折腾，生命不息，折腾不止。</br><small>Life lies in tossing and tossing. Life goes on and on.</small></h3>
+                    <h2 class="max_title">读书感言</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container sentiment">
+
+        <div class="row sentiment_row">
+            <!--左边的主体内容-->
+            <div class="col-lg-9 col-md-8 col-sm-12 col-lg-12 sentiment_content">
+
+                <!--轮播部分-->
+                <div id="myCarousel" class="carousel slide">
+
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                        <li data-target="#myCarousel" data-slide-to="4"></li>
+                        <li data-target="#myCarousel" data-slide-to="5"></li>
+                    </ol>
+
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="{% static 'images/recollections/carousel_1.png' %}" alt="First slide">
+                            <div class="carousel-caption">标题 1</div>
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'images/recollections/carousel_2.png' %}" alt="Second slide">
+                            <div class="carousel-caption">标题 2</div>
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'images/recollections/carousel_3.png' %}" alt="Third slide">
+                            <div class="carousel-caption">标题 3</div>
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'images/recollections/carousel_4.png' %}" alt="Fourth slide">
+                            <div class="carousel-caption">标题 4</div>
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'images/recollections/carousel_5.png' %}" alt="Fifth slide">
+                            <div class="carousel-caption">标题 5</div>
+                        </div>
+                        <div class="item">
+                            <img src="{% static 'images/recollections/carousel_6.png' %}" alt="Sixth slide">
+                            <div class="carousel-caption">标题 5</div>
+                        </div>
+                    </div>
+                    <!-- 轮播（Carousel）导航 -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">上一张</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">下一张</span>
+                    </a>
+                </div>
+
+
+                <!--巨幕-->
+                <div class="jumbotron sentiment_jumbotron">
+                    <h1 class="jumbotron_title">读书的意义！</h1>
+                    <p class="jumbotron_txt">This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+                </div>
+
+                <!--最新最新文章-->
+                <div class="row sentiment_article">
+                    {% for newest in newests %}
+                        <div class="list-group col-md-3 ">
+                            <a href="{% url 'detail' newest.article_id %}" class="list-group-item list-group-item-action flex-column align-items-start active">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h3>{{ newest.article_title }} <span class="text-right label label-warning">New</span></h3>
+                                    <small>{{ newest.article_update }}</small>
+                                </div>
+                            </a>
+                            <a href="{% url 'detail' newest.article_id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <img class="img-responsive" src="{% url 'static_file' newest.article_abstract_img %}" alt="">
+                                </div>
+                                <p class="mb-1">{{ newest.article_abstract | slice:":15" }}</p>
+                                <small class="text-muted">{{ newest.article_content | slice:"3:15" }}</small>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+
+            <!--右边栏目的辅助内容-->
+            <div class="col-lg-3 col-md-4 col-sm-0 col-xs-0 sidebar-offcanvas sentiment_aside" id="sidebar">
+
+                <div class="list-group aside_list">
+                    <a href="#" class="list-group-item active ">读书笔记 </a>
+                    {% for hottest in hottests %}
+                        <a href="#" class="list-group-item">{{ hottest.article_title | slice:"9" }} <span class="badge badge-primary badge-pill">{{ hottest.article_views }}</span></a>
+                    {% endfor %}
+                </div>
+
+                <div class="card mb-3 ">
+                    <img style="height: 200px; width: 100%; display: block;" src="{% static 'images/life_bj2.jpg' %}">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+
+                <div class="card-body">
+                    <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="sentiment_extract">
+        <div class="container-fluid container">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 col-lg-12 col-lg-offset-3 col-md-offset-2 col-xs-offset-0">
+                    <div class="sentiment_extract_frame">
+                        人生的路上，我们都在奔跑，我们总在赶超一些人，也总在被一些人超越。人生的要义，一是欣赏沿途的风景，
+                        二是抵达遥远的终点;人生的秘诀，寻找一种最适合自己的速度， 莫因疾进而不堪重荷，莫因迟缓而空耗生命;
+                        人生的快乐，走自己的路，看自己的景，超越他人不得意，他人超越不失志。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+{% block script %}
+    <script>
+        $(function () {
+            $('.carousel').carousel({
+                interval: 3500
+            });
+        });
+    </script>
+{% endblock script %}
+
+
+
+
+
+
+

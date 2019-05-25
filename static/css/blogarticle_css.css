@@ -1,0 +1,71 @@
+
+/*响应布局部分*/
+/*pc*/
+.pc {
+    display: none;
+}
+@media (min-width:768px) {
+    .pc{
+        display: block;
+    }
+    .mobile{
+        display: none;
+    }
+}
+
+/*手机*/
+.mobile{
+    display: none;
+}
+@media (max-width: 768px) {
+    .pc{
+        display: none;
+    }
+    .mobile{
+        display: block;
+    }
+}
+
+
+
+/*blogarticle_post.html*/
+.article_post_form{
+    margin: 44px 0 22px 0;
+}
+
+
+
+
+/*blogarticle_list.html*/
+.article_list li ul{
+    display: none;
+}
+.article_list li ul.column_option{
+    display: block;
+}
+
+.article_list li a:hover,a:visited, a:active,a:link{
+    text-decoration: none;
+
+}
+
+
+
+/*.article_list li a:visited{*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*.article_list li a:active{*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*.article_list li a:link{*/
+    /*text-decoration: none;*/
+/*}*/
+
+
+
+.article_list.article_row{
+    margin: 32px 0 0 0;
+}
+

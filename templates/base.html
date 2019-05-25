@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block title %}<title>Vortex</title>{% endblock title %}
+
+    <link type="image/x-icon" rel="shortcut icon"  href="{% static 'images/vortex.ico' %}">
+    <link rel="stylesheet" href="{%  static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/disguise.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+
+    {% block link %} {% endblock link %}
+    {% block style %} {% endblock style %}
+
+</head>
+
+<body>
+
+<!--首页页头部分及首页-->
+<header>
+
+    <div class="header-img">
+
+    </div>
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navhover" role="navigation">
+        <div class="container-fluid container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Vortex</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'index' %}">首页</a></li>
+                    <li><a href="{% url 'technology' %}">编程技术</a></li>
+                    <li><a href="{% url 'sentiment' %}">生活感悟</a></li>
+                    <li><a href="{% url 'recollections' %}">读书笔记</a></li>
+                    <li><a href="{% url 'about' %}">关于本站</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+
+                    <li>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ user.username }}<span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="{% url 'userinfo' %}"><span class="glyphicon glyphicon-user"></span>用户中心</a></li>
+                                <li class="divider"></li>
+                                <li><li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-ou"></span> 退出登录</a></li></li>
+                            </ul>
+                        </div>
+
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<!--首页的主体内容-->
+<div>{% block content %}{% endblock content %}</div>
+
+
+
+<!--底部信息部分-->
+<hr>
+<footer class="footer clearfix">
+    <div class="container-fluid container clearfix">
+
+        <div class="share_list">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-xs-4 col-lg-offset-3 col-md-offset-2 col-xs-offset-0 text-center">
+                    <img class="img-responsive" src="{% static 'images/wechat.png' %}" alt="">
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-4 text-center">
+                    <img class="img-responsive" src="{% static 'images/qq.png' %}" alt="">
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-4 text-center">
+                    <img class="img-responsive" src="{% static 'images/micro_blog.png' %}" alt="">
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="QR_code clearfix">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-xs-6 col-lg-offset-4 col-md-offset-3  col-xs-offset-0 ">
+                    <img class="img-responsive text-center" src="{% static 'images/reward.png' %}" alt="">
+                    <p class="text-center">打赏</p>
+                </div>
+                <div class="col-lg-2 col-md-3 col-xs-6">
+                    <img class="img-responsive text-center" src="{% static 'images/subscribe.png' %}" alt="">
+                    <p class="text-center">关注订阅</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="outer_chain clearfix">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-12 text-center">
+                    <ul class="friendly">
+                        <li><h5>网站导航</h5></li>
+                        <li><a href="http://www.getc.net.cn">加入我们</a></li>
+                        <li><a href="https://m.runoob.com">资源库</a></li>
+                        <li><a href="http://www.litongblog.com">技术博客</a></li>
+                    </ul>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4 col-md-4 col-xs-12 text-center">
+                    <ul class="friendly">
+                        <li><h5>版权信息</h5></li>
+                        <li><a href="http://www.getc.net.cn">Vortex技术团队</a></li>
+                        <li><a href="https://beian.aliyun.com/account/login.htm">粤ICP备17154215号-1</a></li>
+                        <li><a href="#">2019-4-12 00:00:00</a></li>
+                    </ul>.
+
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4 col-md-4 col-xs-12 text-center">
+                    <ul class="friendly">
+                        <li><h5>友情链接</h5></li>
+                        <li><a href="http://www.getc.net.cn">广州市机电技师学院</a></li>
+                        <li><a href="https://m.runoob.com">菜鸟教程</a></li>
+                        <li><a href="http://www.jiwangxh.com">自通学堂官方网站</a></li>
+                    </ul>
+                </div><!-- /.col-lg-4 -->
+
+            </div><!-- /.row -->
+        </div>
+
+        <div class="copyright_information clearfix">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-xs-12 col-lg-offset-3 col-md-offset-3  col-xs-offset-0">
+                    <p class="text-center">copyright:Vortex版权所有|2019-4-2</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/disguise.js' %}"></script>
+
+
+{% block script %}
+{% endblock script %}
+
+</body>
+</html>
